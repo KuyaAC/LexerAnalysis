@@ -21,7 +21,7 @@ while True:
 file_to_read = file_name1
 
 # File to write
-file_to_write = "output.ecpp"
+file_to_write = "DEV.ecpp"
 
 
 # Coms and Cons
@@ -69,13 +69,12 @@ print("\n[Lexemes : Tokens]")
 
 
 # TOKENS
-RE_Keywords = "display|do|else|for|if|long|read|short|switch|void|while"
+RE_Keywords = "int|float|char|string|double|const|display|do|else|for|if|long|read|short|switch|void|while"
 RE_Reserved_Words = "case|define|private|public|return|static|terminal"
-RE_Constant = "const"
 #Arithmetic_Operators
 RE_Modulus_Op = "(%)"
-#RE_Increment_Op = "++"
-#RE_Decrement_Op = "--"
+RE_Increment_Op = "(\++)+[+]"
+RE_Decrement_Op = "(-)+[-]"
 RE_Add = "(\++)"
 RE_Subtract = "(-)"
 RE_Divide = "(/)"
@@ -85,66 +84,44 @@ RE_AND_Op = "(&&)"
 #RE_OR_Op = "||"
 RE_Not_Equal_To = "(!=)"
 RE_NOT_Op = "(!)"  
-RE_LESSTHAN_EQUAL = "<="
-RE_GREATERTHAN_EQUAL = ">="
+RE_LESSTHAN_EQUAL = "(<)+[=]"
+RE_GREATERTHAN_EQUAL = "(>)+[=]"
 RE_LESSTHAN = "(<)"
 RE_GREATERTHAN = "(>)"
 RE_Equal_To = "(==)"
+RE_Equal_Value_Same_Type = "(==)+[=]"
 RE_Equal = "(=)"
-#RE_Equal_Value_Same_Type = "(===)"
 #RE_Not_Equal_Value_Same_Type = "(!==)"
 #ETC
 RE_SemiColon = "(;)"
 RE_C_Numerals = "^[(\d+)$]+[c]"
 RE_Numerals = "^[(\d+)$]"
-RE_Special_Characters = "[\&~!\^\|\:?,\.']"
+RE_Special_Characters = "[\&~!\^\:?,\.']"
 RE_Identifiers = "^[a-zA-Z_]+[a-zA-Z0-9_]*"
 RE_Headers = "([a-zA-Z]+\.[h])"
-RE_Integer = "int"
-RE_Float = "float"
-RE_Character = "char"
-RE_Double= "double"
-RE_String= "string"
 
-RE_Comments = "#"
 #bracket and delimiters
-RE_Brackets = "[\[\|{}\],]|\(\)|\(|\)|{}|\[\]|\""
-#RE_Closing_Brackets = ")"
-#RE_Delimiter = "|"
+RE_Brackets = "[\[\|{}\],]|\(\)\(\)|{}|\[\]|\""
 
 
 
-#def removecom():
-    # Iterate through each line
-        #for line in enumerate(input_program_tokens):
-        # Check if the line starts with #
-              #  if line.startswith("#"):
-            # Print the line number and the line
-                 #   print(f"\nComment in Line {i+1}: {line}")
-                    #input_program_tokens = line.replace(f'{line}','')
 
-#removecom()
 
 #To Categorize The Tokens
 
 
 for token in input_program_tokens:
-    if(re.findall(RE_Comments,token)):
-        pass
-    elif(re.findall(RE_Keywords,token)):
+    if(re.findall(RE_Keywords,token)):
         print("[", token , ": Keyword]")
-    #elif(re.findall(RE_Comments,token)):
     elif(re.findall(RE_Reserved_Words,token)):
         print("[",token , ": Reserved_Words]")
-    elif(re.findall(RE_Constant,token)):
-        print("[",token , ": Constant]")
 #arithmetic
     elif(re.findall(RE_Modulus_Op,token)):
         print("[",token , ": Modulus_Operator]")
-    #elif(re.findall(RE_Increment_Op,token)):
-        #print("[",token , ": Incrementation]")
-    #elif(re.findall(RE_Decrement_Op,token)):
-        #print("[",token , ": Decrementation]")
+    elif(re.findall(RE_Increment_Op,token)):
+        print("[",token , ": Incrementation]")
+    elif(re.findall(RE_Decrement_Op,token)):
+        print("[",token , ": Decrementation]")
     elif(re.findall(RE_Add,token)):
         print("[",token, ": Add_Operator]")
     elif(re.findall(RE_Subtract,token)):
@@ -170,8 +147,8 @@ for token in input_program_tokens:
         print("[",token , ": Greaterthan_Equal]")
     elif(re.findall(RE_Equal_To,token)):
         print("[",token , ": Equal_To]")
-    #elif(re.findall(RE_Equal_Value_Same_Type,token)):
-        #print("[",token , ": Equal_Value_Same_Type]")
+    elif(re.findall(RE_Equal_Value_Same_Type,token)):
+        print("[",token , ": Equal_Value_Same_Type]")
     #elif(re.findall(RE_Not_Equal_Value_Same_Type,token)):
         #print("[",token , ": Not_Equal_Value_Same_Type]")
 #ETC
@@ -179,8 +156,6 @@ for token in input_program_tokens:
         print("[",token , ": Equal_sign]")
     elif(re.findall(RE_SemiColon,token)):
         print("[",token , ": Semi-colon]")
-    #elif(re.findall(RE_Numerals,token)):
-        #print("[",token, ": Number]")
     elif(re.findall(RE_C_Numerals,token)):
         token = token[:-1]
         print("[",token, ": Constant_Number]")
@@ -188,25 +163,11 @@ for token in input_program_tokens:
         print("[",token, ": Number]")
     elif(re.findall(RE_Special_Characters,token)):
         print("[",token, ": Special Character/Symbol]")
-    elif(re.findall(RE_Integer,token)):
-        print("[",token, ": Integer]")
-    elif(re.findall(RE_Float,token)):
-        print("[",token, ": Float]")
-    elif(re.findall(RE_Character,token)):
-        print("[",token, ": Character]")
-    elif(re.findall(RE_Double,token)):
-        print("[",token, ": Double]")
-    elif(re.findall(RE_String,token)):
-        print("[",token, ": String]")
     elif(re.findall(RE_Identifiers,token)):
         print("[",token, ": Identifiers]")
 #bracket and delimiters
     elif(re.findall(RE_Brackets,token)):
-        print("[",token, ": Brackets]")
-   # elif(re.findall(RE_Closing_Brackets,token)):
-        #print("[",token, ": Closing_Brackets]")
-    #elif(re.findall(RE_Delimiter,token)):
-        #print("[",token, ": Delimiter]")
+        print("[",token, ": Brackets/Delimiter]")
     else:
         print("Unknown Value")
 
