@@ -1,0 +1,13 @@
+From File: sample.ecpp
+Here is the Output of ECPP Lexical Analyzer:
+
+[Lexemes : Tokens]
+[index: Identifiers]
+[=: Equal_sign]
+[2: Number]
+[*: Multiplication_Operator]
+[count: Identifiers]
+[=: Equal_sign]
+[17: Number]
+[;: Semi-colon]
+Comment in Line 2: #HAHAHAHA

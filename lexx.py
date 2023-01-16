@@ -112,8 +112,8 @@ RE_Brackets = "[\[\|{}\],]|\(\)\(\)|{}|\[\]|\""
 #To Categorize The Tokens
 
 with open(Outputt, "w") as f:
-    f.write("From File: " + file_to_write + "\n")
-    f.write("\n" + str(input_program_tokens) + "\n")
+    f.write("From File: " + file_to_read + "\n")
+    f.write("Here is the Output of ECPP Lexical Analyzer:\n")
     f.write("\n[Lexemes : Tokens]")
     for token in input_program_tokens:
             if(re.findall(RE_Keywords,token)):
