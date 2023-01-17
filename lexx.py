@@ -9,10 +9,10 @@ import nltk
 while True:
     file_name1 = input("Enter the file name: ")
     if file_name1.endswith('.ecpp'):
-        print("File name accepted.")
+        print("File name accepted.\n")
         break
     else:
-        print("Invalid file name. \nPlease enter a file name ending in .ecpp")
+        print("The file you've enter is invalid. \nPlease enter a file that has .ecpp at the end.")
 
 #Restrict File INput
 
@@ -67,7 +67,7 @@ input_program_tokens = nltk.wordpunct_tokenize(input_program);
 #OUTPUT
 #print("From File:",file)
 #print("From File:",file)
-print("Done! Please Visit the file!",)
+print("The symbol table has been generated. \nPlease check the file.")
 
 
 # TOKENS
@@ -97,7 +97,7 @@ RE_Equal = "(=)"
 #ETC
 RE_SemiColon = "(;)"
 RE_C_Numerals = "^[(\d+)$]+[c]"
-RE_Numerals = "^[(\d+)$]"
+RE_Numerals = "^[(\d+)]"
 RE_Special_Characters = "[\&~!\^\:?,\.']"
 RE_Identifiers = "^[a-zA-Z_]+[a-zA-Z0-9_]*"
 RE_Headers = "([a-zA-Z]+\.[h])"
@@ -113,7 +113,7 @@ RE_Brackets = "[\[\|{}\],]|\(\)\(\)|{}|\[\]|\""
 
 with open(Outputt, "w") as f:
     f.write("From File: " + file_to_read + "\n")
-    f.write("Here is the Output of ECPP Lexical Analyzer:\n")
+    f.write("Here is the Output of EC++ Lexical Analyzer:\n")
     f.write("\n[Lexemes : Tokens]")
     for token in input_program_tokens:
             if(re.findall(RE_Keywords,token)):
@@ -124,13 +124,13 @@ with open(Outputt, "w") as f:
             elif(re.findall(RE_Modulus_Op,token)):
                 f.write("\n["+ token + ": Modulus_Operator]")
             elif(re.findall(RE_Increment_Op,token)):
-                f.write("\n["+ token + ": Incrementation]")
+                f.write("\n["+ token + ": Incrementation_Operator]")
             elif(re.findall(RE_Decrement_Op,token)):
-                f.write("\n["+ token + ": Decrementation]")
+                f.write("\n["+ token + ": Decrementation_Operator]")
             elif(re.findall(RE_Add,token)):
-                f.write("\n["+ token + ": Add_Operator]")
+                f.write("\n["+ token + ": Addition_Operator]")
             elif(re.findall(RE_Subtract,token)):
-                f.write("\n["+ token + ": Subtract_Operator]")
+                f.write("\n["+ token + ": Subtraction_Operator]")
             elif(re.findall(RE_Divide,token)):
                 f.write("\n["+ token + ": Division_Operator]")
             elif(re.findall(RE_Multiply,token)):
@@ -167,7 +167,7 @@ with open(Outputt, "w") as f:
             elif(re.findall(RE_Numerals,token)):
                 f.write("\n["+ token + ": Number]")
             elif(re.findall(RE_Special_Characters,token)):
-                f.write("\n["+ token + ": Special Character/Symbol]")
+                f.write("\n["+ token + ": Special Character]")
             elif(re.findall(RE_Identifiers,token)):
                 f.write("\n["+ token + ": Identifiers]")
 #bracket and delimiters
@@ -189,7 +189,8 @@ def print_line_numbers():
                 if line.startswith("#"):
             # Print the line number and the line
                     with open(Outputt, "a") as f:
-                         f.write(f"\nComment in Line {i+1}: {line}")
+                        f.write("\n")
+                        f.write(f"Comment in Line {i+1}: {line}")
 
 print_line_numbers()
 

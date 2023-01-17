@@ -1,5 +1,5 @@
 From File: sample.ecpp
-Here is the Output of ECPP Lexical Analyzer:
+Here is the Output of EC++ Lexical Analyzer:
 
 [Lexemes : Tokens]
 [index: Identifiers]
