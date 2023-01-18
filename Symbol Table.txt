@@ -1,13 +1,10 @@
 From File: sample.ecpp
 Here is the Output of EC++ Lexical Analyzer:
 
-[Lexemes : Tokens]
-[index: Identifiers]
-[=: Equal_sign]
-[2: Number]
-[*: Multiplication_Operator]
-[count: Identifiers]
-[=: Equal_sign]
-[17: Number]
-[;: Semi-colon]
-Comment in Line 2: #HAHAHAHA
+Lexemes                                  Tokens
+Allen                                    Special Character
+Carl                                     Identifiers
+\                                        Not Recognized as a Token
+n                                        Special Character
+\                                        Not Recognized as a Token
+t                                        Special Character

@@ -3,6 +3,7 @@ import re
 import os
 import nltk
 
+
 #import sys
 
 #Restrict File INput
@@ -12,7 +13,7 @@ while True:
         print("File name accepted.\n")
         break
     else:
-        print("The file you've enter is invalid. \nPlease enter a file that has .ecpp at the end.")
+        print("The file you've enter is invalid. \nPlease enter a file that has .ecpp at the end.\n")
 
 #Restrict File INput
 
@@ -67,12 +68,12 @@ input_program_tokens = nltk.wordpunct_tokenize(input_program);
 #OUTPUT
 #print("From File:",file)
 #print("From File:",file)
-print("The symbol table has been generated. \nPlease check the file.")
+print("The Symbol Table has been generated. \nPlease check the file.")
 
 
 # TOKENS
 RE_Keywords = "int|float|char|string|double|const|display|do|else|for|if|long|read|short|switch|void|while"
-RE_Reserved_Words = "case|define|private|public|return|static|terminal"
+RE_Reserved_Words = "case|define|private|public|return|static|terminate"
 #Arithmetic_Operators
 RE_Modulus_Op = "(%)"
 RE_Increment_Op = "(\++)+[+]"
@@ -99,6 +100,7 @@ RE_SemiColon = "(;)"
 RE_C_Numerals = "^[(\d+)$]+[c]"
 RE_Numerals = "^[(\d+)]"
 RE_Special_Characters = "[\&~!\^\:?,\.']"
+RE_NewSpecial_Char = "([\]+[n]|[\]+[t])"
 RE_Identifiers = "^[a-zA-Z_]+[a-zA-Z0-9_]*"
 RE_Headers = "([a-zA-Z]+\.[h])"
 
@@ -114,67 +116,69 @@ RE_Brackets = "[\[\|{}\],]|\(\)\(\)|{}|\[\]|\""
 with open(Outputt, "w") as f:
     f.write("From File: " + file_to_read + "\n")
     f.write("Here is the Output of EC++ Lexical Analyzer:\n")
-    f.write("\n[Lexemes : Tokens]")
+    f.write("%-40s %s"%("\nLexemes",  " Tokens\n"))
     for token in input_program_tokens:
             if(re.findall(RE_Keywords,token)):
-                f.write("\n["+ token + ": Keyword]")
+                f.write("%-40s %s"%(token , "Keyword\n"))
             elif(re.findall(RE_Reserved_Words,token)):
-                f.write("\n[" + token + ": Reserved_Words]")
+                f.write("%-40s %s"%( token , "Reserved_Words\n"))
 #arithmetic
             elif(re.findall(RE_Modulus_Op,token)):
-                f.write("\n["+ token + ": Modulus_Operator]")
+                f.write("%-40s %s"%( token , "Modulus_ArOperator\n"))
             elif(re.findall(RE_Increment_Op,token)):
-                f.write("\n["+ token + ": Incrementation_Operator]")
+                f.write("%-40s %s"%( token , "Increment_ArOperator\n"))
             elif(re.findall(RE_Decrement_Op,token)):
-                f.write("\n["+ token + ": Decrementation_Operator]")
+                f.write("%-40s %s"%( token , "Decrement_ArOperator\n"))
             elif(re.findall(RE_Add,token)):
-                f.write("\n["+ token + ": Addition_Operator]")
+                f.write("%-40s %s"%( token , "Addition_ArOperator\n"))
             elif(re.findall(RE_Subtract,token)):
-                f.write("\n["+ token + ": Subtraction_Operator]")
+                f.write("%-40s %s"%( token , "Subtraction_ArOperator\n"))
             elif(re.findall(RE_Divide,token)):
-                f.write("\n["+ token + ": Division_Operator]")
+                f.write("%-40s %s"%( token , "Division_ArOperator\n"))
             elif(re.findall(RE_Multiply,token)):
-                f.write("\n["+ token + ": Multiplication_Operator]")
+                f.write("%-40s %s"%( token , "Multiplication_ArOperator\n"))
 #boolean        
             elif(re.findall(RE_AND_Op,token)):
-                f.write("\n["+ token + ": And]")
+                f.write("%-40s %s"%( token , "And_BoolRelOperator\n"))
     #elif(re.findall(RE_OR_Op,token)):
-        #print("[",token , ": OR]")
+        #print("[",token , ": OR\n")
             elif(re.findall(RE_NOT_Op,token)):
-                f.write("\n["+ token + ": NOT]")
+                f.write("%-40s %s"%( token , "Not_BoolOperator\n"))
             elif(re.findall(RE_LESSTHAN,token)):
-                f.write("\n["+ token + ": LessThan]")
+                f.write("%-40s %s"%( token , "LessThan_BoolOperator\n"))
             elif(re.findall(RE_GREATERTHAN,token)):
-                f.write("\n["+ token + ": Greaterthan]")
+                f.write("%-40s %s"%( token , "GreaterThan_BoolOperator\n"))
             elif(re.findall(RE_LESSTHAN_EQUAL,token)):
-                f.write("\n["+ token + ": Lessthan_Equal]")
+                f.write("%-40s %s"%( token , "LessThanOrEqualTo_BoolOperator\n"))
             elif(re.findall(RE_GREATERTHAN_EQUAL,token)):
-                f.write("\n["+ token + ": Greaterthan_Equal]")
+                f.write("%-40s %s"%( token , "GreaterThanOrEqualTo_BoolOperator\n"))
             elif(re.findall(RE_Equal_To,token)):
-                f.write("\n["+ token + ": Equal_To]")
+                f.write("%-40s %s"%( token , "EqualTo_BoolOperator\n"))
             elif(re.findall(RE_Equal_Value_Same_Type,token)):
-                f.write("\n["+ token + ": Equal_Value_Same_Type]")
+                f.write("%-40s %s"%( token , "Equal_Value_Same_Type\n"))
     #elif(re.findall(RE_Not_Equal_Value_Same_Type,token)):
-        #print("[",token , ": Not_Equal_Value_Same_Type]")
+        #print("[",token , ": Not_Equal_Value_Same_Type\n")
 #ETC
             elif(re.findall(RE_Equal,token)):
-                f.write("\n["+ token + ": Equal_sign]")
+                f.write("%-40s %s"%( token , "SimpleAssignment_ArOperator\n"))
             elif(re.findall(RE_SemiColon,token)):
-                f.write("\n["+ token + ": Semi-colon]")
+                f.write("%-40s %s"%( token , "Semi-colon\n"))
             elif(re.findall(RE_C_Numerals,token)):
                 token = token[:-1]
-                f.write("\n["+ token + ": Constant_Number]")
+                f.write("%-40s %s"%( token , "Constant_Number\n"))
             elif(re.findall(RE_Numerals,token)):
-                f.write("\n["+ token + ": Number]")
+                f.write("%-40s %s"%( token , "Number\n"))
+            elif(re.findall(RE_NewSpecial_Char,token)):
+                f.write("%-40s %s"%( token , "Special Character\n"))
             elif(re.findall(RE_Special_Characters,token)):
-                f.write("\n["+ token + ": Special Character]")
+                f.write("%-40s %s"%( token , "Special Character\n"))
             elif(re.findall(RE_Identifiers,token)):
-                f.write("\n["+ token + ": Identifiers]")
+                f.write("%-40s %s"%( token , "Identifiers\n"))
 #bracket and delimiters
             elif(re.findall(RE_Brackets,token)):
-                f.write("\n["+ token + ": Brackets/Delimiter]")
+                f.write("%-40s %s"%( token , "Brackets/Delimiter\n"))
             else:
-                f.write("\nUnknown Value")
+                f.write("%-40s %s"%( token , "Not Recognized as a Token\n"))
 
 
 
@@ -182,15 +186,16 @@ with open(Outputt, "w") as f:
 def print_line_numbers():
         file = open(file_name1)
         lines = file.readlines()
-
     # Iterate through each line
         for i, line in enumerate(lines):
         # Check if the line starts with #
                 if line.startswith("#"):
             # Print the line number and the line
                     with open(Outputt, "a") as f:
-                        f.write("\n")
-                        f.write(f"Comment in Line {i+1}: {line}")
+                        
+                        s = str(line)
+                        s.replace(" ","")
+                        f.write("%-40s %s"%(s, "Comment"))
 
 print_line_numbers()
 
