@@ -96,6 +96,7 @@ RE_Equal = "(=)"
 RE_SemiColon = "(;)"
 RE_C_Numerals = "^[(\d+)$]+[c]"
 RE_Numerals = "^[(\d+)$]"
+RE_float = '\d+\.\d+'
 RE_Special_Characters = "[\&~!\^\:?,\.']"
 RE_Identifiers = "^[a-zA-Z_]+[a-zA-Z0-9_]*"
 RE_Headers = "([a-zA-Z]+\.[h])"
@@ -118,6 +119,8 @@ for token in input_program_tokens:
 #arithmetic
     elif(re.findall(RE_Modulus_Op,token)):
         print("[",token , ": Modulus_Operator]")
+    elif(re.findall(RE_float,token)):
+        print("[",token , ": Float]")
     elif(re.findall(RE_Increment_Op,token)):
         print("[",token , ": Incrementation]")
     elif(re.findall(RE_Decrement_Op,token)):

@@ -2,7 +2,7 @@ import re
 
 import os
 import nltk
-
+from nltk.tokenize import word_tokenize
 
 #import sys
 
@@ -48,7 +48,7 @@ with open(file_to_read, "r") as file:
                 # Write the modified line to the output file
                 output.write(new_line + "\n")
             # Check if the line starts with "#"
-            elif line.startswith("#"):
+            elif line.startswith("//"):
                 # Do nothing, ignore the line
                 pass
             else:
@@ -64,7 +64,7 @@ file = open(file_name)
 input_program=file.read()
 
 #input_program = input("Enter Your Code: ");
-input_program_tokens = nltk.wordpunct_tokenize(input_program);
+input_program_tokens = nltk.word_tokenize(input_program);
 
 
 #OUTPUT
@@ -72,11 +72,16 @@ input_program_tokens = nltk.wordpunct_tokenize(input_program);
 #print("From File:",file)
 print("The Symbol Table has been generated. \nPlease check the file.")
 
-
+#NoiseWords
+RE_Nint = "integer"
+RE_Nchar = "character"
+RE_Nconst = "constant"
+RE_Nbool = "boolean"
+RE_string = "(r'\".*\"')"
 # TOKENS
 RE_Keywords = "int|float|char|string|double|const|display|do|else|for|if|long|read|short|switch|void|while"
 RE_Reserved_Words = "case|define|private|public|return|static|terminate"
-RE_Newline = "newline"
+RE_Newline = "newline|endl"
 RE_Newtab = "newtab"
 #Arithmetic_Operators
 RE_Modulus_Op = "(%)"
@@ -87,7 +92,7 @@ RE_Subtract = "(-)"
 RE_Divide = "(/)"
 RE_Multiply = "(\*)"
 #Boolean_Operators
-RE_AND_Op = "(&&)"
+RE_AND_Op = "(&)+[&]"
 #RE_OR_Op = "||"
 RE_Not_Equal_To = "(!=)"
 RE_NOT_Op = "(!)"  
@@ -101,9 +106,9 @@ RE_Equal = "(=)"
 #RE_Not_Equal_Value_Same_Type = "(!==)"
 #ETC
 RE_SemiColon = "(;)"
+RE_Float = "[0-9]+.+[0-9]"
 RE_C_Numerals = "^[(\d+)]+[c]"
 RE_Numerals = "^[\d+]"
-RE_Float = "^[\d+]+[.]+[\d+]"
 RE_Special_Characters = "[\&~!\^\:?,\.']"
 #RE_NewSpecial_Char = "([\]+[n]|[\]+[t])"
 RE_Identifiers = "^[a-zA-Z_]+[a-zA-Z0-9_]*"
@@ -128,10 +133,24 @@ with open(Outputt, "w") as f:
     f.write("Here is the Output of EC++ Lexical Analyzer:\n")
     f.write("%-40s %s"%("\nLexemes",  " Tokens\n"))
     for token in input_program_tokens:
-            if(re.findall(RE_Keywords,token)):
+            if(re.findall(RE_Nint,token)):
+                token = token[-4:]
+                f.write("%-40s %s"%( token , "Noisewords\n"))
+            elif(re.findall(RE_Nchar,token)):
+                token = token[-5:]
+                f.write("%-40s %s"%( token , "Noisewords\n"))
+            elif(re.findall(RE_Nconst,token)):
+                token = token[-3:]
+                f.write("%-40s %s"%( token , "Noisewords\n"))
+            elif(re.findall(RE_Nbool,token)):
+                token = token[-3:]
+                f.write("%-40s %s"%( token , "Noisewords\n"))
+            elif(re.findall(RE_Keywords,token)):
                 f.write("%-40s %s"%(token , "Keyword\n"))
+            elif(re.findall(RE_string,token)):
+                f.write("%-40s %s"%(token , "String\n"))
             elif(re.findall(RE_Reserved_Words,token)):
-                f.write("%-40s %s"%( token , "Reserved_Words\n"))
+                f.write("%-40s %s"%( token , "Reserved_Word\n"))
             elif(re.findall(RE_Newline,token)):
                 f.write("%-40s %s"%( token , "New_line\n"))
             elif(re.findall(RE_Newtab,token)):
@@ -170,20 +189,20 @@ with open(Outputt, "w") as f:
                 f.write("%-40s %s"%( token , "EqualTo_BoolOperator\n"))
             elif(re.findall(RE_Equal_Value_Same_Type,token)):
                 f.write("%-40s %s"%( token , "Equal_Value_Same_Type\n"))
+            elif(re.findall(RE_Equal,token)):
+                f.write("%-40s %s"%( token , "SimpleAssignment_ArOperator\n"))
     #elif(re.findall(RE_Not_Equal_Value_Same_Type,token)):
         #print("[",token , ": Not_Equal_Value_Same_Type\n")
 #ETC
-            elif(re.findall(RE_Equal,token)):
-                f.write("%-40s %s"%( token , "SimpleAssignment_ArOperator\n"))
             elif(re.findall(RE_SemiColon,token)):
                 f.write("%-40s %s"%( token , "Semi-colon\n"))
+            elif(re.findall(RE_Float,token)):
+                f.write("%-40s %s"%( token , "Float_literal\n"))
             elif(re.findall(RE_C_Numerals,token)):
                 token = token[:-1]
                 f.write("%-40s %s"%( token , "Constant_Number\n"))
             elif(re.findall(RE_Numerals,token)):
                 f.write("%-40s %s"%( token , "Int_literals\n"))
-            elif(re.findall(RE_Float,token)):
-                f.write("%-40s %s"%( token , "Float_literals\n"))
             #elif(re.findall(RE_NewSpecial_Char,token)):
                 #f.write("%-40s %s"%( token , "New_line\n"))
             elif(re.findall(RE_Special_Characters,token)):
@@ -204,7 +223,7 @@ with open(Outputt, "w") as f:
             elif(re.findall(RE_CloseB,token)):
                 f.write("%-40s %s"%( token , "Close_Bracket\n"))
             else:
-                f.write("%-40s %s"%( token , "Not Recognized as a Token\n"))
+                f.write("%-40s %s"%( token , "Invalid Token\n"))
 
 
 
@@ -215,7 +234,7 @@ def print_line_numbers():
     # Iterate through each line
         for i, line in enumerate(lines):
         # Check if the line starts with #
-                if line.startswith("#"):
+                if line.startswith("//"):
             # Print the line number and the line
                     with open(Outputt, "a") as f:
                         
