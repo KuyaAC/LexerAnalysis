@@ -2,9 +2,23 @@ From File: sample.ecpp
 Here is the Output of EC++ Lexical Analyzer:
 
 Lexemes                                  Tokens
-Allen                                    Special Character
-Carl                                     Identifiers
+(                                        Open_Parenthesis
+Allen                                    Identifier
+Carl                                     Identifier
+2                                        Int_literals
+)                                        Close_Parenthesis
++                                        Addition_ArOperator
+{                                        Open_CurlyB
+AC                                       Identifier
+}                                        Close_CurlyB
+*                                        Multiplication_ArOperator
+[                                        Open_Bracket
+Delas                                    Identifier
+Alas                                     Identifier
+]                                        Close_Bracket
+1                                        Int_literals
+.                                        Special Character
+2                                        Int_literals
 \                                        Not Recognized as a Token
-n                                        Special Character
-\                                        Not Recognized as a Token
-t                                        Special Character
+n                                        Identifier
+"                                        Not Recognized as a Token

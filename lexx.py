@@ -56,6 +56,8 @@ with open(file_to_read, "r") as file:
                 output.write(line)
 
 
+
+
 #Open file
 file_name = file_to_write
 file = open(file_name)
@@ -74,6 +76,8 @@ print("The Symbol Table has been generated. \nPlease check the file.")
 # TOKENS
 RE_Keywords = "int|float|char|string|double|const|display|do|else|for|if|long|read|short|switch|void|while"
 RE_Reserved_Words = "case|define|private|public|return|static|terminate"
+RE_Newline = "newline"
+RE_Newtab = "newtab"
 #Arithmetic_Operators
 RE_Modulus_Op = "(%)"
 RE_Increment_Op = "(\++)+[+]"
@@ -97,16 +101,22 @@ RE_Equal = "(=)"
 #RE_Not_Equal_Value_Same_Type = "(!==)"
 #ETC
 RE_SemiColon = "(;)"
-RE_C_Numerals = "^[(\d+)$]+[c]"
-RE_Numerals = "^[(\d+)]"
+RE_C_Numerals = "^[(\d+)]+[c]"
+RE_Numerals = "^[\d+]"
+RE_Float = "^[\d+]+[.]+[\d+]"
 RE_Special_Characters = "[\&~!\^\:?,\.']"
-RE_NewSpecial_Char = "([\]+[n]|[\]+[t])"
+#RE_NewSpecial_Char = "([\]+[n]|[\]+[t])"
 RE_Identifiers = "^[a-zA-Z_]+[a-zA-Z0-9_]*"
 RE_Headers = "([a-zA-Z]+\.[h])"
 
 #bracket and delimiters
-RE_Brackets = "[\[\|{}\],]|\(\)\(\)|{}|\[\]|\""
-
+#RE_OpenBracket = "[\[\|{}\],]|\(\)\(\)|{}|\[\]|\""
+RE_OpenP = "[(]"
+RE_CloseP = "[)]"
+RE_OpenCB = "[{]"
+RE_CloseCB = "[}]"
+RE_OpenB = "[[]"
+RE_CloseB = "[]]"
 
 
 
@@ -122,6 +132,10 @@ with open(Outputt, "w") as f:
                 f.write("%-40s %s"%(token , "Keyword\n"))
             elif(re.findall(RE_Reserved_Words,token)):
                 f.write("%-40s %s"%( token , "Reserved_Words\n"))
+            elif(re.findall(RE_Newline,token)):
+                f.write("%-40s %s"%( token , "New_line\n"))
+            elif(re.findall(RE_Newtab,token)):
+                f.write("%-40s %s"%( token , "New_tab\n"))
 #arithmetic
             elif(re.findall(RE_Modulus_Op,token)):
                 f.write("%-40s %s"%( token , "Modulus_ArOperator\n"))
@@ -167,16 +181,28 @@ with open(Outputt, "w") as f:
                 token = token[:-1]
                 f.write("%-40s %s"%( token , "Constant_Number\n"))
             elif(re.findall(RE_Numerals,token)):
-                f.write("%-40s %s"%( token , "Number\n"))
-            elif(re.findall(RE_NewSpecial_Char,token)):
-                f.write("%-40s %s"%( token , "Special Character\n"))
+                f.write("%-40s %s"%( token , "Int_literals\n"))
+            elif(re.findall(RE_Float,token)):
+                f.write("%-40s %s"%( token , "Float_literals\n"))
+            #elif(re.findall(RE_NewSpecial_Char,token)):
+                #f.write("%-40s %s"%( token , "New_line\n"))
             elif(re.findall(RE_Special_Characters,token)):
                 f.write("%-40s %s"%( token , "Special Character\n"))
             elif(re.findall(RE_Identifiers,token)):
-                f.write("%-40s %s"%( token , "Identifiers\n"))
-#bracket and delimiters
-            elif(re.findall(RE_Brackets,token)):
-                f.write("%-40s %s"%( token , "Brackets/Delimiter\n"))
+                f.write("%-40s %s"%( token , "Identifier\n"))
+#bracket 
+            elif(re.findall(RE_OpenP,token)):
+                f.write("%-40s %s"%( token , "Open_Parenthesis\n"))
+            elif(re.findall(RE_CloseP,token)):
+                f.write("%-40s %s"%( token , "Close_Parenthesis\n"))
+            elif(re.findall(RE_OpenCB,token)):
+                f.write("%-40s %s"%( token , "Open_CurlyB\n"))
+            elif(re.findall(RE_CloseCB,token)):
+                f.write("%-40s %s"%( token , "Close_CurlyB\n"))
+            elif(re.findall(RE_OpenB,token)):
+                f.write("%-40s %s"%( token , "Open_Bracket\n"))
+            elif(re.findall(RE_CloseB,token)):
+                f.write("%-40s %s"%( token , "Close_Bracket\n"))
             else:
                 f.write("%-40s %s"%( token , "Not Recognized as a Token\n"))
 
@@ -195,7 +221,7 @@ def print_line_numbers():
                         
                         s = str(line)
                         s.replace(" ","")
-                        f.write("%-40s %s"%(s, "Comment"))
+                        f.write(f"\nComment in Line {i+1}: {line}")
 
 print_line_numbers()
 
