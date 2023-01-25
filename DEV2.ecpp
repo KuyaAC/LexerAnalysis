@@ -1,1 +1,14 @@
-(Allen Carl 2) + {AC} * [Delas Alas] 1.2  \nnewlinenewlinenewline
+int main( ) {
+const month = 12c
+    a++ ;
+    b++ ;
+    display << Sum4 << (a + b) ;
+    display << Difference4 << (a - b) ;   
+    display << Product4 << (a * b) ; 
+    display << Quotient4 << (a / b) ; 
+    display << Remainder4 << (a % b) ;
+}
+integer
+character
+constant
+boolean

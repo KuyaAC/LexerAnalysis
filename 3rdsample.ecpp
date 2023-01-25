@@ -1,5 +1,5 @@
 int main( ) {
-const month = 12c
+    const month = 12 
     a++ ;
     b++ ;
     display << "Sum" << (a + b) ;
@@ -8,6 +8,7 @@ const month = 12c
     display << "Quotient" << (a / b) ; 
     display << "Remainder" << (a % b) ;
 }
+//Demo of noise words
 integer
 character
 constant

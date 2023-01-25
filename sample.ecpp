@@ -1,3 +1,12 @@
-integer character boolean constant == ("acie") >= == <= != endl 1.2
-//HAHAHA
+//program that greet the user
+int main( ) {
+   string int;
+   read >> name;
+   display << "Hello" << name << endl; 
+   return 0;
+   check;
+}
+
+
+
 
