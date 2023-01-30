@@ -1,76 +1,38 @@
-From File: 3rdsample.ecpp
+From File: sample.ecpp
 Here is the Output of EC++ Lexical Analyzer:
 
 Lexemes                                  Tokens
+//                                       Division_ArOperator
+program                                  Identifier
+that                                     Identifier
+greet                                    Identifier
+the                                      Identifier
+user                                     Identifier
 int                                      Keyword
 main                                     Identifier
 (                                        Open_Parenthesis
 )                                        Close_Parenthesis
 {                                        Open_CurlyB
-const                                    Keyword
-month                                    Identifier
-=                                        SimpleAssignment_ArOperator
-12                                       Constant_Number
-a                                        Identifier
-++                                       Increment_ArOperator
+string                                   Keyword
+int                                      Keyword
 ;                                        Semi-colon
-b                                        Identifier
-++                                       Increment_ArOperator
+read                                     Keyword
+>>                                       GreaterThan_BoolOperator
+name                                     Identifier
 ;                                        Semi-colon
 display                                  Keyword
-<<                                       Insertion Operator
-Sum                                      String_literal
-<<                                       Insertion Operator
-(                                        Open_Parenthesis
-a                                        Identifier
-+                                        Addition_ArOperator
-b                                        Identifier
-)                                        Close_Parenthesis
+<<                                       LessThan_BoolOperator
+"                                        Not Recognized as a Token
+Hello                                    Identifier
+"                                        Not Recognized as a Token
+<<                                       LessThan_BoolOperator
+name                                     Identifier
+<<                                       LessThan_BoolOperator
+endl                                     Identifier
 ;                                        Semi-colon
-display                                  Keyword
-<<                                       Insertion Operator
-Difference4                              Keyword
-<<                                       Insertion Operator
-(                                        Open_Parenthesis
-a                                        Identifier
--                                        Subtraction_ArOperator
-b                                        Identifier
-)                                        Close_Parenthesis
+return                                   Reserved_Words
+0                                        Int_literals
 ;                                        Semi-colon
-display                                  Keyword
-<<                                       Insertion Operator
-Product                                  String_literal
-<<                                       Insertion Operator
-(                                        Open_Parenthesis
-a                                        Identifier
-*                                        Multiplication_ArOperator
-b                                        Identifier
-)                                        Close_Parenthesis
-;                                        Semi-colon
-display                                  Keyword
-<<                                       Insertion Operator
-Quotient                                 String_literal
-<<                                       Insertion Operator
-(                                        Open_Parenthesis
-a                                        Identifier
-/                                        Division_ArOperator
-b                                        Identifier
-)                                        Close_Parenthesis
-;                                        Semi-colon
-display                                  Keyword
-<<                                       Insertion Operator
-Remainder                                String_literal
-<<                                       Insertion Operator
-(                                        Open_Parenthesis
-a                                        Identifier
-%                                        Modulus_ArOperator
-b                                        Identifier
-)                                        Close_Parenthesis
+check                                    Identifier
 ;                                        Semi-colon
 }                                        Close_CurlyB
-eger                                     Noisewords
-acter                                    Noisewords
-ant                                      Noisewords
-ean                                      Noisewords
-
-Comment in Line 11: //Demo of noise words

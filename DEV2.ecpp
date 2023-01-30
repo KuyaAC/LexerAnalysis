@@ -1,14 +1,11 @@
 int main( ) {
-const month = 12c
-    a++ ;
-    b++ ;
-    display << Sum4 << (a + b) ;
-    display << Difference4 << (a - b) ;   
-    display << Product4 << (a * b) ; 
-    display << Quotient4 << (a / b) ; 
-    display << Remainder4 << (a % b) ;
+   string int;
+   read >> name;
+   display << Hello4 << name << endl; 
+   return 0;
+   check;
 }
-integer
-character
-constant
-boolean
+
+
+
+

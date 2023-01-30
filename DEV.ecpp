@@ -1,14 +1,12 @@
+//program that greet the user
 int main( ) {
-const month = 12c
-    a++ ;
-    b++ ;
-    display << "Sum" << (a + b) ;
-    display << "Difference" << (a - b) ;   
-    display << "Product" << (a * b) ; 
-    display << "Quotient" << (a / b) ; 
-    display << "Remainder" << (a % b) ;
+   string int;
+   read >> name;
+   display << "Hello" << name << endl; 
+   return 0;
+   check;
 }
-integer
-character
-constant
-boolean
+
+
+
+
