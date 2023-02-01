@@ -2,6 +2,14 @@
 import re
 import os
 
+#Import file codings
+while True:
+    file_name1 = input("Enter the file name: ")
+    if file_name1.endswith('.ecpp'):
+        print("File name accepted.\n")
+        break
+    else:
+        print("The file you've enter is invalid. \nPlease enter a file that has .ecpp at the end.\n")
 
 #Defining Constant part
 CONST = [
@@ -15,7 +23,7 @@ TOKENS = [
     'OPERATOR', 'SEPARATOR', 'STRING_CONSTANT', 'FLOAT_CONSTANTS', 'CHAR_CONSTANTS', 'DATATYPE' , 'BOOL_CONST']
 
 #Open File dat end in ECPP
-with open("sample.ecpp", "r") as input_file:
+with open(file_name1, "r") as input_file:
     contents = input_file.read()
 blank_var = contents
 print("INPUT FILE:\n",blank_var)

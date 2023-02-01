@@ -1,5 +1,10 @@
 #include <iostream>
 using namespace std; 
-   int main () {
-      display << "hello world";
-         }
+   int myFunction(int x) {
+  return 5 + x;
+}
+
+char main() {
+  display << myFunction(3);
+  return 0;
+}
