@@ -1,13 +1,7 @@
 import re
 import os
 
-while True:
-    file_name1 = input("Enter the file name: ")
-    if file_name1.endswith('.ecpp'):
-        print("File name accepted.\n")
-        break
-    else:
-        print("The file you've enter is invalid. \nPlease enter a file that has .ecpp at the end.\n")
+
 
 CONST = [
             'INTEGER_CONSTANT',
@@ -18,10 +12,10 @@ TOKENS = [
     'KEY_WORD', 'IDENTIFIER', 'INTEGER_CONSTANT',
     'OPERATOR', 'SEPARATOR', 'STRING_CONSTANT', 'FLOAT_CONSTANTS', 'CHAR_CONSTANTS', 'DATATYPE' , 'BOOL_CONST']
 
-with open(file_name1, "r") as input_file:
+with open("sample.ecpp", "r") as input_file:
     contents = input_file.read()
 blank_var = contents
-print("INPUT FILE:\n", blank_var)
+print("INPUT FILE:\n",blank_var)
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -72,8 +66,8 @@ TOKENS_DEF = {
     
 }
 
-Keyword = ["if", "else", "while", "for", "cout", "cin", "return", "switch", "case", "break", "function",
-           "using", "namespace", "include", "endl","default"]
+Keyword = ["if", "else", "while", "for", "display", "read", "return", "switch", "case", "terminate", "function",
+           "define", "using", "namespace", "include", "endl","default"]
 bracket = ['(', ')', '{', '}', '[', ']']
 datatype = ['int', 'float', 'char', 'string', 'bool','void']
 punctuator = [',', ';', ':', ',']
@@ -92,8 +86,8 @@ class Node:
     # Function to initialise the node object
     def __init__(self, value, line_numbers, type):
         self.data = {
-            "value": value,
             "LINE_NUMBERS": line_numbers,
+            "value": value,
             "TYPE": type
         }  # Assign data
         self.next = None  # Initialize next as null
@@ -460,7 +454,7 @@ class parser:
             self.matchID(self.lookahead.data['TYPE'])
             self.match('>')
         else:
-            print("ERROR IN INCLUDE STMT ")
+            print("SYNTAX ERROR IN INCLUDE STMT ")
     def includelist_(self):
         data = self.lookahead.data['value'];
         if (data == '#'):
@@ -469,7 +463,7 @@ class parser:
         elif(data in ['$',"using"]):
             return
         else:
-            print("ERROR IN INCLUDE LIST _")
+            print("SYNTAX ERROR IN INCLUDE LIST _")
 
 
     def includelist(self):
@@ -478,7 +472,7 @@ class parser:
             self.includestmt()
             self.includelist_()
         else:
-            print("ERROR IN INCLUDE LIST")
+            print("SYNTAX ERROR IN INCLUDE LIST")
 
     def namespace(self):
         data = self.lookahead.data['value'];
@@ -488,7 +482,7 @@ class parser:
             self.matchID(self.lookahead.data["TYPE"])
             self.match(';')
         else:
-            print("ERROR IN NAMESPACE")
+            print("SYNTAX ERROR IN NAMESPACE")
     def start(self):
         data = self.lookahead.data['value'];
         if(data == '#'):
@@ -498,7 +492,7 @@ class parser:
         elif(data == "$"):
             return
         else:
-            print("ERROR IN START")
+            print("SYNTAX ERROR IN START")
 
 
 
@@ -511,7 +505,7 @@ class parser:
         elif (data == ';'):
             return
         else:
-            print("ERROR IN VARRAIBLE dec list _")
+            print("SYNTAX ERROR IN VARRAIBLE dec list _")
     def vardecid(self):
         data = self.lookahead.data['value']
 
@@ -519,7 +513,7 @@ class parser:
             self.matchID(self.lookahead.data["TYPE"])
             self.vardecid_()
         else:
-            print("ERROR IN VARDEC ID")
+            print("SYNTAX ERROR IN VARDEC ID")
 
     def vardecid_(self):
         data = self.lookahead.data['value'];
@@ -530,7 +524,7 @@ class parser:
                 self.lookahead = self.nextToken()
                 self.match(']')
             else:
-                print("ERROR: NOT A CONTS")
+                print("SYNTAX ERROR: NOT A CONTS")
         elif ( data == ',' or data == ';' or data == '='):
             return
         else:
@@ -551,7 +545,7 @@ class parser:
         elif ( data == '!='):
             self.match('!=')
         else:
-            print("ERROR IN RELOP !")
+            print("SYNTAX ERROR IN REL OP !")
 
 
     def expression(self):
@@ -576,7 +570,7 @@ class parser:
         elif (data == '!' or self.lookahead.data['TYPE'] == 'IDENTIFIER'or data == '(' or self.lookahead.data['TYPE'] in CONST):
             self.simpleExp()
         else:
-            print("ERROR IN EPRESSION")
+            print("SYNTAX ERROR IN EPRESSION")
 
 
     def arglist_(self):
@@ -588,7 +582,7 @@ class parser:
         elif (data ==')'):
             return
         else:
-            print("ERROR IN ARG LIST _")
+            print("SYNTAX ERROR IN ARG LIST _")
 
     def arglist(self):
         data = self.lookahead.data['value'];
@@ -600,7 +594,7 @@ class parser:
             self.expression()
             self.arglist_()
         else:
-            print("ERROR IN  ARG LIST")
+            print("SYNTAX ERROR IN  ARG LIST")
 
     def args(self):
         data = self.lookahead.data['value'];
@@ -614,7 +608,7 @@ class parser:
         elif ( data == ')'):
             return
         else:
-            print("ERROR IN  ARGS")
+            print("SYNTAX ERROR IN  ARGS")
     def constants(self):
         data = self.lookahead.data['value']
         CONST = [
@@ -624,7 +618,7 @@ class parser:
         if(self.lookahead.data['TYPE'] in CONST):
             self.lookahead=self.nextToken()
         else:
-            print("ERROR IN CONSTANTS ")
+            print("SYNTAX ERROR IN CONSTANTS ")
     def factor_(self):
         data = self.lookahead.data['value']
 
@@ -635,7 +629,7 @@ class parser:
         elif ( data == '*' or data == '/' or data == '%' or data == '+' or data == '-' or data == '<=' or data == '<' or data == '>' or data == '>=' or data == '==' or data == '!=' or data == '&&' or data=="||" or data == ',' or data == ';' or data == ')' or data == "<<"):
             return
         else:
-            print("ERROR IN FACTOR _ " + data)
+            print("SYNTAX ERROR IN FACTOR _ " + data)
     def factor(self):
         data = self.lookahead.data['value'];
         CONST = [
@@ -652,7 +646,7 @@ class parser:
         elif (self.lookahead.data['TYPE'] in CONST):
             self.constants()
         else:
-            print("ERROR IN  FACTOR")
+            print("SYNTAX ERROR IN  FACTOR")
 
 
 
@@ -665,7 +659,7 @@ class parser:
         if (self.lookahead.data['TYPE'] == 'IDENTIFIER' or data == '(' or self.lookahead.data['TYPE'] in CONST):
             self.factor()
         else:
-            print("ERROR IN UNARY EXP")
+            print("SYNTAX ERROR IN UNARY EXP")
 
     def mulOp(self):
         data = self.lookahead.data['value']
@@ -676,7 +670,7 @@ class parser:
         elif (data=='%'):
             self.match('%')
         else:
-            print("ERROR WITH MULOP")
+            print("SYNTAX ERROR WITH MULOP")
     def mulExp_(self):
         data = self.lookahead.data['value']
         
@@ -687,7 +681,7 @@ class parser:
         elif ( data == '+' or data == '-' or data == '<=' or data == '<' or data == '>' or data == '>=' or data == '==' or data == '!=' or data == '&&' or data=="||" or data == ',' or data == ';' or data == ')' or data=="<<"):
             return
         else:
-            print("ERROR IN MUL EXP _")
+            print("SYNTAX ERROR IN MUL EXP _")
     def sumOP(self):
         data = self.lookahead.data['value']
         if( data == '+'):
@@ -695,7 +689,7 @@ class parser:
         elif( data == '-'):
             self.match('-')
         else:
-            print("ERROR IN SUM OP")
+            print("SYNTAX ERROR IN SUM OP")
     def sumExp_(self):
         data = self.lookahead.data['value'];
         if (data == '+' or data == '-'):
@@ -705,7 +699,7 @@ class parser:
         elif (data == '<=' or data == '<' or data == '>' or data == '>=' or data == '==' or data == '!=' or data == '&&' or data=="||" or data == ',' or data == ';' or data == ')' or data=="<<"):
             return
         else:
-            print("ERROR IN SUM EXP_")
+            print("SYNTAX ERROR IN SUM EXP_")
     def mulExp(self):
         data = self.lookahead.data['value'];
         CONST = [
@@ -716,7 +710,7 @@ class parser:
             self.unaryExp()
             self.mulExp_()
         else:
-            print("ERROR IN SUM EXP_")
+            print("SYNTAX ERROR IN SUM EXP_")
     def sumExp(self):
         data = self.lookahead.data['value'];
         CONST = [
@@ -727,7 +721,7 @@ class parser:
             self.mulExp()
             self.sumExp_()
         else:
-            print("ERROR IN SUM EXP")
+            print("SYNTAX ERROR IN SUM EXP")
     def relExp_(self):
         data = self.lookahead.data['value'];
         if (data == '<=' or data == '<' or data == '>' or data == '>=' or data == '==' or data == '!='):
@@ -737,7 +731,7 @@ class parser:
         elif (data == '||' or data == '&&' or data ==',' or data == ';' or data == ')' or data=="<<"):
             return
         else:
-            print("ERROR IN REL EXP !")
+            print("SYNTAX ERROR IN REL EXP !")
     def relExp(self):
         data = self.lookahead.data['value'];
         CONST = [
@@ -748,7 +742,7 @@ class parser:
             self.sumExp()
             self.relExp_()
         else:
-            print("ERROR IN REL EXP !")
+            print("SYNTAX ERROR IN REL EXP !")
     def unaryRelExp(self):
         data = self.lookahead.data['value'];
         CONST = [
@@ -761,7 +755,7 @@ class parser:
         elif (self.lookahead.data['TYPE'] == 'IDENTIFIER' or data == '(' or self.lookahead.data['TYPE'] in CONST ):
             self.relExp()
         else:
-            print("ERROR IN UNARY REL EXP")
+            print("SYNTAX ERROR IN UNARY REL EXP")
 
 
     def andExp_(self):
@@ -773,7 +767,7 @@ class parser:
         elif (data == '||' or data == ',' or data == ';' or data == ')' or data == "<<"):
             return
         else:
-            print("ERROR IN AND EXP _")
+            print("SYNTAX ERROR IN AND EXP _")
     def andExp(self):
         data = self.lookahead.data['value'];
         CONST = [
@@ -784,7 +778,7 @@ class parser:
             self.unaryRelExp()
             self.andExp_()
         else:
-            print("ERROR IN and EXP")
+            print("SYNTAX ERROR IN and EXP")
 
     def SimpleExp_(self):
         data = self.lookahead.data['value'];
@@ -795,7 +789,7 @@ class parser:
         elif (data == ',' or data == ';' or data == ')' or data == "<<"):
             return
         else:
-            print("ERROR IN SIMPLE EXP _")
+            print("SYNTAX ERROR IN SIMPLE EXP _")
     def simpleExp(self):
         data = self.lookahead.data['value'];
         CONST = [
@@ -806,7 +800,7 @@ class parser:
             self.andExp()
             self.SimpleExp_()
         else:
-            print("ERROR IN SIMPLE EXP")
+            print("SYNTAX ERROR IN SIMPLE EXP")
 
 
     def vardecinit_(self):
@@ -818,7 +812,7 @@ class parser:
         elif(data == ',' or data == ';' ):
             return
         else:
-            print("ERROR IN VARDECINIT_")
+            print("SYNTAX ERROR IN VARDECINIT_")
 
     def vardecinit(self):
         data = self.lookahead.data['value'];
@@ -827,7 +821,7 @@ class parser:
             self.vardecid()
             self.vardecinit_()
         else:
-            print("ERROR IN VARRAIBLE INIT")
+            print("SYNTAX ERROR IN VARRAIBLE INIT")
 
     def vardeclist(self):
         data = self.lookahead.data['value'];
@@ -836,7 +830,7 @@ class parser:
             self.vardecinit()
             self.vardeclist_()
         else:
-            print("ERROR IN VARRAIBLE DECLIST")
+            print("SYNTAX ERROR IN VARRAIBLE DECLIST")
 
     def varriable(self):
         data = self.lookahead.data['value'];
@@ -845,7 +839,7 @@ class parser:
             self.vardeclist()
             self.match(';')
         else:
-            print("ERROR IN VARRAIBLE ONLY")
+            print("SYNTAX ERROR IN VARRAIBLE ONLY")
 
     def declaration__(self):
         data = self.lookahead.data['value'];
@@ -855,7 +849,7 @@ class parser:
         elif (self.lookahead.data['TYPE'] == "IDENTIFIER"):
             self.varriable()
         else:
-            print("ERROR IN DELARATION__")
+            print("SYNTAX ERROR IN DELARATION__")
     def declaration(self):
         data = self.lookahead.data['value'];
 
@@ -863,7 +857,7 @@ class parser:
             self.typeid()
             self.declaration__()
         else:
-            print("ERROR:  IN declaration FUNCTION")
+            print("SYNTAX ERROR:  IN declaration FUNCTION")
     def declaration_(self):
         data = self.lookahead.data['value'];
 
@@ -873,7 +867,7 @@ class parser:
         elif (data == '$'):
             return
         else:
-            print("ERROR:  IN declaration_ FUNCTION")
+            print("SYNTAX ERROR:  IN declaration_ FUNCTION")
 
     def declist(self):
         data = self.lookahead.data['value'];
@@ -882,7 +876,7 @@ class parser:
             self.declaration()
             self.declaration_()
         else:
-            print("ERROR:  IN declist FUNCTION")
+            print("SYNTAX ERROR:  IN declist FUNCTION")
 
     def program(self):
         data = self.lookahead.data['value'];
@@ -892,7 +886,7 @@ class parser:
         elif (data == '$'):
             return
         else:
-            print("ERROR:  IN PROGRAM FUNCTION")
+            print("SYNTAX ERROR:  IN PROGRAM FUNCTION")
     def function(self):
         data = self.lookahead.data['value'];
         if(self.lookahead.data['TYPE'] == 'IDENTIFIER'):
@@ -906,7 +900,7 @@ class parser:
         elif(data == '$'):
             return
         else:
-            print("ERROR IN FUNCTION SYNTAX TOKEN: ",self.lookahead.data)
+            print("SYNTAX ERROR IN FUNCTION SYNTAX TOKEN: ",self.lookahead.data)
             exit()
     def stmtlist(self):
         data = self.lookahead.data['value'];
@@ -915,11 +909,11 @@ class parser:
             'INTEGER_CONSTANT',
             'STRING_CONSTANT', 'FLOAT_CONSTANTS', 'CHAR_CONSTANTS', 'BOOL_CONST'
         ]
-        if(data in ['!','(','if','cout','cin','while','for','switch','return','break'] or data in datatype or self.lookahead.data["TYPE"] in ["IDENTIFIER" , CONST]):
+        if(data in ['!','(','if','display','read','while','for','switch','return','terminate'] or data in datatype or self.lookahead.data["TYPE"] in ["IDENTIFIER" , CONST]):
             self.statment()
             self.stmtlist_()
         else:
-            print("ERROR IN STMTLIST")
+            print("SYNTAX ERROR IN STMTLIST")
     def iteration(self):
         data = self.lookahead.data['value'];
         if(data == 'for'):
@@ -943,7 +937,7 @@ class parser:
         	self.stmtlist()
         	self.match("}")
         else:
-            print('ERROR IN ITERETION')
+            print('SYNTAX ERROR IN ITERATION')
     def switch(self):
     	data=self.lookahead.data["value"]
     	if(data =="switch"):
@@ -956,7 +950,7 @@ class parser:
     		self.default()
     		self.match("}")
     	else:
-    		print("Error in SWITCH")
+    		print("SYNTAX Error in SWITCH")
     def caselist(self):
     	data = self.lookahead.data["value"]
     	if(data=="case"):
@@ -965,7 +959,7 @@ class parser:
     	elif(data=="default" or data == "}"):
     		return
     	else:
-    		print("ERROR IN CASELIST")
+    		print("SYNTAX ERROR IN CASELIST")
     		
     def onecase(self):
     		data = self.lookahead.data["value"]
@@ -976,9 +970,9 @@ class parser:
     				self.match(":")
     				self.stmtlist()
     			else:
-    				print("ERROR IN CONSTANTS IN SWITCH CASE")
+    				print("SYNTAX ERROR IN CONSTANTS IN SWITCH CASE")
     		else: 
-    		     print("ERROR IN ONE CASE")
+    		     print("SYNTAX ERROR IN ONE CASE")
     		
     	 	
     def default(self):
@@ -990,7 +984,7 @@ class parser:
     	elif(data == "}"):
     		return
     	else:
-    		print("ERROR IN DEFAULT")
+    		print("SYNTAX ERROR IN DEFAULT")
     def selection(self):
     	data =self.lookahead.data["value"]
     	if(data == "if"):
@@ -1003,7 +997,7 @@ class parser:
     		self.match("}")
     		self.selection_()
     	else:
-    		print("ERROR IN SELECTION: "+data)
+    		print("SYNTAX ERROR IN SELECTION: "+data)
     def selection_(self):
     	data = self.lookahead.data["value"]
     	if(data == ";"):
@@ -1014,7 +1008,7 @@ class parser:
     		self.stmtlist()
     		self.match("}")
     	else:
-    		print("ERROR IN IF CONDITION: TOKEN "+data)
+    		print("SYNTAX ERROR IN IF CONDITION: TOKEN "+data)
     		exit()
     
     def statment(self):
@@ -1027,13 +1021,13 @@ class parser:
             self.selection()
         elif(data in ['switch']):
             self.switch()
-        elif(data in ['break']):
-            self.match("break")
+        elif(data in ['terminate']):
+            self.match("terminate")
             self.match(";")
         elif(data == "continue"):
         	self.match("continue")
         	self.match(";")
-        elif(data in ["cin","cout"]):
+        elif(data in ["read","display"]):
         	self.input_output()
         elif(data in datatype):
             self.declaration()
@@ -1041,7 +1035,7 @@ class parser:
             self.expression()
             self.match(";")
         else:
-            print("ERROR IN STATEMENT")
+            print("SYNTAX ERROR IN STATEMENT")
 
     def printlist(self):
     	data= self.lookahead.data["value"]
@@ -1049,14 +1043,14 @@ class parser:
     		self.single()
     		self.printlist_()
     	else:
-    		print("ERROR IN PRINTLIST :")
+    		print("SYNTAX ERROR IN PRINTLIST :")
     def single(self):
     	data=self.lookahead.data["value"]
     	if(data == "<<"):
     		self.match("<<")
     		self.expression()
     	else:
-    		print("ERROR IN SINGLE: ")
+    		print("SYNTAX ERROR IN SINGLE: ")
     def printlist_(self):
     	data =self.lookahead.data["value"]
     	data_next = self.lookahead.next
@@ -1066,7 +1060,7 @@ class parser:
     	elif(data == "<<" or data == ";" ):
     		return 
     	else:
-    		print("ERROR IN PRINTLIST_")
+    		print("SYNTAX ERROR IN PRINTLIST_")
     def endstmt(self):
     	data = self.lookahead.data["value"]
     	if(data == "<<"):
@@ -1076,26 +1070,26 @@ class parser:
     	elif(data == ";"):
     		self.match(";")
     	else:
-    		print("ERROR IN ENDSTMT")
+    		print("SYNTAX ERROR IN ENDSTMT")
     def input_output(self):
     	data = self.lookahead.data["value"]
-    	if(data == "cout"):
-    		self.match("cout")
+    	if(data == "display"):
+    		self.match("display")
     		self.printlist()
     		self.endstmt()
-    	elif(data == "cin"):
-    		self.match("cin")
+    	elif(data == "read"):
+    		self.match("read")
     		self.inputlist()
     		self.match(";")
     	else:
-    		print("ERROR IN INPUT_OUTPUT TOKEN: "+self.lookahead.data)
+    		print("SYNTAX ERROR IN INPUT_OUTPUT TOKEN: "+self.lookahead.data)
     def inputlist(self):
     	data = self.lookahead.data["value"]
     	if(data == ">>"):
     		self.singleinput()
     		self.inputlist_()
     	else:
-    		print("ERROR IN INPUTLIST")
+    		print("SYNTAX ERROR IN INPUTLIST")
     def inputlist_(self):
     	data = self.lookahead.data["value"]
     	if(data==">>"):
@@ -1104,24 +1098,24 @@ class parser:
     	elif(data == ";"):
     		return;
     	else:
-    		print("ERROR IN INPUTLIST_")
+    		print("SYNTAX ERROR IN INPUTLIST_")
     def singleinput(self):
     	data=self.lookahead.data["value"]
     	if(data == ">>"):
     		self.match(">>")
     		self.matchID(self.lookahead.data["TYPE"])
     	else:
-    		print("ERROR IN SINGLEINPUT:")
+    		print("SYNTAX ERROR IN SINGLEINPUT:")
     def stmtlist_(self):
         data = self.lookahead.data['value'];
 
-        if (data in ['!', '(','cout','cin','if', 'while', 'for', 'switch', 'return', 'break'] or data in datatype or self.lookahead.data["TYPE"] in ["IDENTIFIER", CONST]):
+        if (data in ['!', '(','display','read','if', 'while', 'for', 'switch', 'return', 'terminate'] or data in datatype or self.lookahead.data["TYPE"] in ["IDENTIFIER", CONST]):
             self.statment()
             self.stmtlist_()
         elif(data in ['}'] or data == "default"):
             return
         else:
-            print("ERROR IN STMTLIST_" + data)
+            print("SYNTAX ERROR IN STMTLIST_" + data)
 
     def returnstmt(self):
         data = self.lookahead.data['value'];
@@ -1132,7 +1126,7 @@ class parser:
         elif(data == '}'):
             return
         else:
-            print("ERROR IN STATEMENT: ",self.lookahead.data)
+            print("SYNTAX ERROR IN STATEMENT: ",self.lookahead.data)
             exit()
     def data(self):
         value = self.lookahead.data['TYPE'];
@@ -1144,7 +1138,7 @@ class parser:
         elif (data == ';'):
             return
         else:
-            print("ERROR IN RETURN DATA: ",self.lookahead.data)
+            print("SYNTAX ERROR IN RETURN DATA: ",self.lookahead.data)
             exit()
     def paramas(self):
         data = self.lookahead.data['value'];
@@ -1153,7 +1147,7 @@ class parser:
         elif (data == ')'):
             return
         else:
-            print("ERROR WITH PARAMETERS: ",self.lookahead.data)
+            print("SYNTAX ERROR WITH PARAMETERS: ",self.lookahead.data)
             exit()
     def paralist(self):
         data = self.lookahead.data['value'];
@@ -1161,7 +1155,7 @@ class parser:
             self.parameter()
             self.paralist_()
         else:
-            print("ERROR WITH PARALIST: ", self.lookahead.data)
+            print("SYNTAX ERROR WITH PARALIST: ", self.lookahead.data)
             exit()
     def paralist_(self):
         data = self.lookahead.data['value'];
@@ -1172,7 +1166,7 @@ class parser:
         elif(data == ')'):
             return
         else:
-            print("ERROR WITH PARALIST_: ", self.lookahead.data)
+            print("SYNTAX ERROR WITH PARALIST_: ", self.lookahead.data)
             exit()
     def parameter(self):
         data = self.lookahead.data['value'];
@@ -1180,7 +1174,7 @@ class parser:
             self.vartypeid()
             self.paraid()
         else:
-            print("ERROR WITH PARAMETERS: ", self.lookahead.data)
+            print("SYNTAX ERROR WITH PARAMETERS: ", self.lookahead.data)
             exit()
     def paraid(self):
         type = self.lookahead.data['TYPE'];
@@ -1188,7 +1182,7 @@ class parser:
             self.matchID(type)
             self.paraid_()
         else:
-            print("ERROR IN PARAMETERS IDENTIFIER: ",self.lookahead.data)
+            print("SYNTAX ERROR IN PARAMETERS IDENTIFIER: ",self.lookahead.data)
             exit()
     def paraid_(self):
         data = self.lookahead.data['value'];
@@ -1198,7 +1192,7 @@ class parser:
         elif (data == ')' or data == ','):
             return
         else:
-            print("ERROR IN PARAMETERS IDENTIFIER: ", self.lookahead.data)
+            print("SYNTAX ERROR IN PARAMETERS IDENTIFIER: ", self.lookahead.data)
             exit()
 
     def match(self,t):
@@ -1206,14 +1200,14 @@ class parser:
             self.lookahead= self.nextToken()
 
         else:
-            print("ERROR WITH SYNATX NEAR TOKKEN: ",self.lookahead.data['value'] , " IN LINE NUMBER: ", self.lookahead.data['LINE_NUMBERS'])
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
     def matchID(self,type):
 
         if(type=='IDENTIFIER'):
             self.lookahead = self.nextToken()
         else:
-            print("ERROR IN TOKEN: " , self.lookahead.data)
+            print("SYNTAX ERROR IN TOKEN: " , self.lookahead.data)
             print("EXPECTED TO BE IDENTIFIER ...")
             exit()
 
@@ -1233,7 +1227,7 @@ class parser:
         elif (data == 'void'):
             self.match('void')
         else:
-            print("ERROR WITH TYPE IN TOKEN: " , self.lookahead.data)
+            print("SYNTAX ERROR WITH TYPE IN TOKEN: " , self.lookahead.data)
             exit()
 
     def vartypeid(self):
@@ -1250,7 +1244,7 @@ class parser:
         elif (data == 'bool'):
             self.match('bool')
         else:
-            print("ERROR WITH TYPE IN TOKEN: ", self.lookahead.data)
+            print("SYNTAX ERROR WITH TYPE IN TOKEN: ", self.lookahead.data)
             exit()
 
 
@@ -1261,7 +1255,7 @@ def lexer():
     for token in lexer.tokens:
         tok.append(token.value, token.line_number, token.type)
     tok.append('$', token.line_number + 1, "EOF")
-    tok.printList()
+    #tok.printList()
     #print("\nSYMBOL TABLE: \n")
     #lexer.sym.printList()
     #print("\n")
@@ -1271,7 +1265,7 @@ def lexer():
 
 
     if check.lookahead.data['value']  == '$':
-        print("SYNTAX IS CORRECT... ")
+        print(f"{bcolors.BOLD}{bcolors.OKBLUE}Syntactically Correct!\n")
 
 
 
