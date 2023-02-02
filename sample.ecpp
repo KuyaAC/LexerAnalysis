@@ -1,10 +1,10 @@
 #include <iostream>
-using namespace std; 
-   int myFunction(int x) {
-  return 5 + x;
-}
+using namespace std;
 
-char main() {
-  display << myFunction(3);
-  return 0;
-}
+int main() {
+  int x = 10;
+  int y = 11
+  sum = x + y;
+
+  display << sum;
+  }

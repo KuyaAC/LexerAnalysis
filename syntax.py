@@ -1,8 +1,8 @@
-#module part
+#Import module
 import re
 import os
 
-#Import file codings
+#Import file (Dapat end in ".ecpp")
 while True:
     file_name1 = input("Enter the file name: ")
     if file_name1.endswith('.ecpp'):
@@ -27,18 +27,15 @@ with open(file_name1, "r") as input_file:
     contents = input_file.read()
 blank_var = contents
 print("INPUT FILE:\n",blank_var)
+
+#Color text Feature(pampaganda lang)
 class bcolors:
-    HEADER = '\033[95m'
     OKBLUE = '\033[94m'
-    OKCYAN = '\033[96m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
     FAIL = '\033[91m'
-    ENDC = '\033[0m'
     BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
+    
 
-
+#reading float, int , and char correctly
 integers = re.findall('^[0-9]+$|[0-9]+', blank_var)
 floatn = re.findall(r'[0-9]+\.[0-9]+', blank_var)
 chars = re.findall(r'\'[^\'\\\.]\'', blank_var)
@@ -92,18 +89,19 @@ incr = ['++', '--']
 bool_cons = ['True','False']
 
 
+#Read tokens individually
 class Node:
 
-    # Function to initialise the node object
+    
     def __init__(self, value, line_numbers, type):
         self.data = {
             "LINE_NUMBERS": line_numbers,
             "value": value,
             "TYPE": type
-        }  # Assign data
-        self.next = None  # Initialize next as null
+        }  
+        self.next = None  
 
-# Node of a doubly linked list
+
 class Symbol_table_Node:
     def __init__(self, name, line_numbers, type,scope):
         self.data = {
@@ -111,8 +109,8 @@ class Symbol_table_Node:
             "LINE_NUMBERS": line_numbers,
             "TYPE": type,
             "Scope": scope
-        }  # Assign data
-        self.next = None  # Initialize next as null
+        }  
+        self.next = None  
         self.prev = None
 class SymbolTable:
     def __init__(self):
@@ -155,35 +153,29 @@ class SymbolTable:
 
 class Tokkens:
 
-    # Function to initialize head
+    
     def __init__(self):
         self.head = None
 
-    # This function is defined in Linked List class
-    # Appends a new node at the end. This method is
-    # defined inside LinkedList class shown above */
     def append(self, value, line_numbers, type):
 
-        # 1. Create a new node
-        # 2. Put in the data
-        # 3. Set next as None
+        
         new_node = Node(value, line_numbers, type)
 
-        # 4. If the Linked List is empty, then make the
-        # new node as head
+        
         if self.head is None:
             self.head = new_node
             return
 
-        # 5. Else traverse till the last node
+        
         last = self.head
         while (last.next):
             last = last.next
 
-        # 6. Change the next of last node
+       
         last.next = new_node
 
-    # Utility function to print the linked list
+  
     def printList(self):
         temp = self.head
         while (temp):
@@ -199,6 +191,7 @@ class Token(object):
         self.value = value
         self.line_number = linenumber
 
+#start of checking the syntax
 class Lexer(object):
 
     def __init__(self):
@@ -251,19 +244,13 @@ class Lexer(object):
                 self.temp = ''
 
 
-                # symbol table code
-
-
-
-
-
-
+                
 
 
             else:
                print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
                exit()
-                # error handler
+                
             self.temp = ''
         else:
             return 0;
@@ -274,6 +261,7 @@ class Lexer(object):
                 return True
         return False
 
+#Checking of operators and special characters
     def main(self):
         i = 0
         strf = False
@@ -436,7 +424,9 @@ class Lexer(object):
             i = i + 1
             continue
 
-
+#Checking of Header Part (Fixed lang po yung header sa: "#include <iostream>)
+#And also the checking of standard library (Fixed po sya as: "using namespace std;")
+#if hindi po sya na sunod ma reread po sya as syntax error ni analyzer
 class parser:
 
     def __init__(self,tok):
@@ -519,7 +509,8 @@ class parser:
             exit()
     def vardecid(self):
         data = self.lookahead.data['value']
-
+        
+#Checking of identifier
         if ( self.lookahead.data["TYPE"]=="IDENTIFIER"):
             self.matchID(self.lookahead.data["TYPE"])
             self.vardecid_()
@@ -530,6 +521,7 @@ class parser:
     def vardecid_(self):
         data = self.lookahead.data['value'];
 
+#Checking of integer constant
         if ( data == '['):
             self.match('[')
             if(self.lookahead.data['TYPE']=='INTEGER_CONSTANT'):
@@ -545,7 +537,7 @@ class parser:
             exit()
     def relop(self):
         data = self.lookahead.data['value'];
-
+#Checking of Bool Op
         if( data == '<='):
             self.match('<=')
         elif ( data == '<'):
@@ -562,7 +554,7 @@ class parser:
             print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
 
-
+#Dito pinag bubukod cons value ng mga DATATYPE sa mga Identifier
     def expression(self):
         data = self.lookahead.data['value'];
 
@@ -671,7 +663,7 @@ class parser:
             exit()
 
 
-
+#Checking the use of Arithmetic Operators
     def unaryExp(self):
         data = self.lookahead.data['value'];
         CONST = [
@@ -932,6 +924,8 @@ class parser:
         else:
             print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
+
+#Checking proper used of the Brackects
     def function(self):
         data = self.lookahead.data['value'];
         if(self.lookahead.data['TYPE'] == 'IDENTIFIER'):
@@ -947,6 +941,7 @@ class parser:
         else:
             print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
+#Checking proper used of keywords
     def stmtlist(self):
         data = self.lookahead.data['value'];
         
@@ -1282,6 +1277,7 @@ class parser:
             print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
 
+#Checking the use of datatypes
     def typeid(self):
         data = self.lookahead.data['value'];
         type = self.lookahead.data['TYPE'];
@@ -1326,10 +1322,6 @@ def lexer():
     for token in lexer.tokens:
         tok.append(token.value, token.line_number, token.type)
     tok.append('$', token.line_number + 1, "EOF")
-    #tok.printList()
-    #print("\nSYMBOL TABLE: \n")
-    #lexer.sym.printList()
-    #print("\n")
     check = parser(tok)
     check.lookahead = check.nextToken()
     check.start()
@@ -1342,3 +1334,7 @@ def lexer():
 
 if __name__ == '__main__':
     lexer()
+
+#This is a syntax analyzer made by Group 1
+#This program able to check the syntax of the code based from the ECPP Language
+#If you have a problem running this program you may contact :https://www.facebook.com/allencarl.delasalas/
