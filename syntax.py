@@ -11,6 +11,25 @@ while True:
     else:
         print("The file you've enter is invalid. \nPlease enter a file that has .ecpp at the end.\n")
 
+#removing the comments
+file_to_read = file_name1
+
+# File to write
+file_to_write = "DEV.ecpp"
+
+with open(file_to_read, "r") as file:
+    # Open the output file for writing
+    with open(file_to_write, "w") as output:
+        # Iterate over each line in the input file
+        for line in file:
+            # Check if the line starts with "#"
+            if line.startswith("//"):
+                # Do nothing, ignore the line
+                pass
+            else:
+                # Write the original line to the output file
+                output.write(line)
+
 #Defining Constant part
 CONST = [
             'INTEGER_CONSTANT',
@@ -23,14 +42,15 @@ TOKENS = [
     'OPERATOR', 'SEPARATOR', 'STRING_CONSTANT', 'FLOAT_CONSTANTS', 'CHAR_CONSTANTS', 'DATATYPE' , 'BOOL_CONST']
 
 #Open File dat end in ECPP
-with open(file_name1, "r") as input_file:
+file_name  = file_to_write
+with open(file_name, "r") as input_file:
     contents = input_file.read()
 blank_var = contents
 print("INPUT FILE:\n",blank_var)
 
 #Color text Feature(pampaganda lang)
 class bcolors:
-    OKBLUE = '\033[94m'
+    OKBLUE = '\033[92m'
     FAIL = '\033[91m'
     BOLD = '\033[1m'
     
@@ -248,7 +268,7 @@ class Lexer(object):
 
 
             else:
-               print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+               print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
                exit()
                 
             self.temp = ''
@@ -341,7 +361,7 @@ class Lexer(object):
                                 i = i + 1
 
                             if (i == len(blank_var) or i > len(blank_var)):
-                                print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+                                print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
                                 exit()
 
                         if (len(self.temp) > 0):
@@ -403,7 +423,7 @@ class Lexer(object):
                                 i = i + 1
                                 continue
                             else:
-                                print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+                                print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
                                 exit()
                         else:
 
@@ -414,18 +434,18 @@ class Lexer(object):
                                 #self.tokens.append(Token(3, blank_var[i], self.count))
                                 #i = i + 1
                             else:
-                                print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+                                print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
                                 exit()
 
                     else:
-                        print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+                        print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
                         exit()
 
             i = i + 1
             continue
 
-#Checking of Header Part (Fixed lang po yung header sa: "#include <iostream>)
-#And also the checking of standard library (Fixed po sya as: "using namespace std;")
+#Checking of Header Part (Fixed lang po yung header sa: "#include <"user_input">)
+#And also the checking of standard library (Fixed po sya as: "using namespace "user_input";")
 #if hindi po sya na sunod ma reread po sya as syntax error ni analyzer
 class parser:
 
@@ -449,7 +469,7 @@ class parser:
             self.matchID(self.lookahead.data['TYPE'])
             self.match('>')
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
     def includelist_(self):
         data = self.lookahead.data['value'];
@@ -459,7 +479,7 @@ class parser:
         elif(data in ['$',"using"]):
             return
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
 
 
@@ -469,7 +489,7 @@ class parser:
             self.includestmt()
             self.includelist_()
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
 
     def namespace(self):
@@ -480,7 +500,7 @@ class parser:
             self.matchID(self.lookahead.data["TYPE"])
             self.match(';')
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
     def start(self):
         data = self.lookahead.data['value'];
@@ -491,7 +511,7 @@ class parser:
         elif(data == "$"):
             return
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
 
 
@@ -505,7 +525,7 @@ class parser:
         elif (data == ';'):
             return
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
     def vardecid(self):
         data = self.lookahead.data['value']
@@ -515,7 +535,7 @@ class parser:
             self.matchID(self.lookahead.data["TYPE"])
             self.vardecid_()
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
 
     def vardecid_(self):
@@ -528,12 +548,12 @@ class parser:
                 self.lookahead = self.nextToken()
                 self.match(']')
             else:
-                print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+                print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
                 exit()
         elif ( data == ',' or data == ';' or data == '='):
             return
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
     def relop(self):
         data = self.lookahead.data['value'];
@@ -551,7 +571,7 @@ class parser:
         elif ( data == '!='):
             self.match('!=')
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
 
 #Dito pinag bubukod cons value ng mga DATATYPE sa mga Identifier
@@ -577,7 +597,7 @@ class parser:
         elif (data == '!' or self.lookahead.data['TYPE'] == 'IDENTIFIER'or data == '(' or self.lookahead.data['TYPE'] in CONST):
             self.simpleExp()
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
 
 
@@ -590,7 +610,7 @@ class parser:
         elif (data ==')'):
             return
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
 
     def arglist(self):
@@ -603,7 +623,7 @@ class parser:
             self.expression()
             self.arglist_()
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
 
     def args(self):
@@ -618,7 +638,7 @@ class parser:
         elif ( data == ')'):
             return
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
     def constants(self):
         data = self.lookahead.data['value']
@@ -629,7 +649,7 @@ class parser:
         if(self.lookahead.data['TYPE'] in CONST):
             self.lookahead=self.nextToken()
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
     def factor_(self):
         data = self.lookahead.data['value']
@@ -641,7 +661,7 @@ class parser:
         elif ( data == '*' or data == '/' or data == '%' or data == '+' or data == '-' or data == '<=' or data == '<' or data == '>' or data == '>=' or data == '==' or data == '!=' or data == '&&' or data=="||" or data == ',' or data == ';' or data == ')' or data == "<<"):
             return
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
     def factor(self):
         data = self.lookahead.data['value'];
@@ -659,7 +679,7 @@ class parser:
         elif (self.lookahead.data['TYPE'] in CONST):
             self.constants()
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
 
 
@@ -673,7 +693,7 @@ class parser:
         if (self.lookahead.data['TYPE'] == 'IDENTIFIER' or data == '(' or self.lookahead.data['TYPE'] in CONST):
             self.factor()
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
 
     def mulOp(self):
@@ -685,7 +705,7 @@ class parser:
         elif (data=='%'):
             self.match('%')
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
     def mulExp_(self):
         data = self.lookahead.data['value']
@@ -697,7 +717,7 @@ class parser:
         elif ( data == '+' or data == '-' or data == '<=' or data == '<' or data == '>' or data == '>=' or data == '==' or data == '!=' or data == '&&' or data=="||" or data == ',' or data == ';' or data == ')' or data=="<<"):
             return
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
     def sumOP(self):
         data = self.lookahead.data['value']
@@ -706,7 +726,7 @@ class parser:
         elif( data == '-'):
             self.match('-')
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
     def sumExp_(self):
         data = self.lookahead.data['value'];
@@ -717,7 +737,7 @@ class parser:
         elif (data == '<=' or data == '<' or data == '>' or data == '>=' or data == '==' or data == '!=' or data == '&&' or data=="||" or data == ',' or data == ';' or data == ')' or data=="<<"):
             return
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
     def mulExp(self):
         data = self.lookahead.data['value'];
@@ -729,7 +749,7 @@ class parser:
             self.unaryExp()
             self.mulExp_()
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
     def sumExp(self):
         data = self.lookahead.data['value'];
@@ -741,7 +761,7 @@ class parser:
             self.mulExp()
             self.sumExp_()
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
     def relExp_(self):
         data = self.lookahead.data['value'];
@@ -752,7 +772,7 @@ class parser:
         elif (data == '||' or data == '&&' or data ==',' or data == ';' or data == ')' or data=="<<"):
             return
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
     def relExp(self):
         data = self.lookahead.data['value'];
@@ -764,7 +784,7 @@ class parser:
             self.sumExp()
             self.relExp_()
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
     def unaryRelExp(self):
         data = self.lookahead.data['value'];
@@ -778,7 +798,7 @@ class parser:
         elif (self.lookahead.data['TYPE'] == 'IDENTIFIER' or data == '(' or self.lookahead.data['TYPE'] in CONST ):
             self.relExp()
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
 
 
@@ -791,7 +811,7 @@ class parser:
         elif (data == '||' or data == ',' or data == ';' or data == ')' or data == "<<"):
             return
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
     def andExp(self):
         data = self.lookahead.data['value'];
@@ -803,7 +823,7 @@ class parser:
             self.unaryRelExp()
             self.andExp_()
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
 
     def SimpleExp_(self):
@@ -815,7 +835,7 @@ class parser:
         elif (data == ',' or data == ';' or data == ')' or data == "<<"):
             return
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
     def simpleExp(self):
         data = self.lookahead.data['value'];
@@ -827,7 +847,7 @@ class parser:
             self.andExp()
             self.SimpleExp_()
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
 
 
@@ -840,7 +860,7 @@ class parser:
         elif(data == ',' or data == ';' ):
             return
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
 
     def vardecinit(self):
@@ -850,7 +870,7 @@ class parser:
             self.vardecid()
             self.vardecinit_()
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
 
     def vardeclist(self):
@@ -860,7 +880,7 @@ class parser:
             self.vardecinit()
             self.vardeclist_()
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
 
     def varriable(self):
@@ -870,7 +890,7 @@ class parser:
             self.vardeclist()
             self.match(';')
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
 
     def declaration__(self):
@@ -881,7 +901,7 @@ class parser:
         elif (self.lookahead.data['TYPE'] == "IDENTIFIER"):
             self.varriable()
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
     def declaration(self):
         data = self.lookahead.data['value'];
@@ -890,7 +910,7 @@ class parser:
             self.typeid()
             self.declaration__()
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
     def declaration_(self):
         data = self.lookahead.data['value'];
@@ -901,7 +921,7 @@ class parser:
         elif (data == '$'):
             return
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
 
     def declist(self):
@@ -911,7 +931,7 @@ class parser:
             self.declaration()
             self.declaration_()
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
 
     def program(self):
@@ -922,7 +942,7 @@ class parser:
         elif (data == '$'):
             return
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
 
 #Checking proper used of the Brackects
@@ -939,7 +959,7 @@ class parser:
         elif(data == '$'):
             return
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
 #Checking proper used of keywords
     def stmtlist(self):
@@ -953,7 +973,7 @@ class parser:
             self.statment()
             self.stmtlist_()
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
     def iteration(self):
         data = self.lookahead.data['value'];
@@ -978,7 +998,7 @@ class parser:
         	self.stmtlist()
         	self.match("}")
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
     def switch(self):
     	data=self.lookahead.data["value"]
@@ -992,7 +1012,7 @@ class parser:
     		self.default()
     		self.match("}")
     	else:
-    		print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n"), exit()
+    		print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n"), exit()
 
     def caselist(self):
     	data = self.lookahead.data["value"]
@@ -1002,7 +1022,7 @@ class parser:
     	elif(data=="default" or data == "}"):
     		return
     	else:
-    		print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n"), exit()
+    		print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n"), exit()
 
     		
     def onecase(self):
@@ -1014,10 +1034,10 @@ class parser:
     				self.match(":")
     				self.stmtlist()
     			else:
-    				print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n"), exit()
+    				print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n"), exit()
 
     		else: 
-    		    print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n"), exit()
+    		    print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n"), exit()
             
 
     		
@@ -1031,7 +1051,7 @@ class parser:
     	elif(data == "}"):
     		return
     	else:
-    		print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n"), exit()
+    		print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n"), exit()
         
 
     def selection(self):
@@ -1046,7 +1066,7 @@ class parser:
     		self.match("}")
     		self.selection_()
     	else:
-    		print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n"), exit()
+    		print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n"), exit()
         
 
     def selection_(self):
@@ -1059,7 +1079,7 @@ class parser:
     		self.stmtlist()
     		self.match("}")
     	else:
-    		print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+    		print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
     		exit()
     
     def statment(self):
@@ -1086,7 +1106,7 @@ class parser:
             self.expression()
             self.match(";")
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
 
     def printlist(self):
@@ -1095,7 +1115,7 @@ class parser:
     		self.single()
     		self.printlist_()
     	else:
-    		print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n"), exit()
+    		print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n"), exit()
         
 
     def single(self):
@@ -1104,7 +1124,7 @@ class parser:
     		self.match("<<")
     		self.expression()
     	else:
-    		print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n"), exit()
+    		print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n"), exit()
         
 
     def printlist_(self):
@@ -1116,7 +1136,7 @@ class parser:
     	elif(data == "<<" or data == ";" ):
     		return 
     	else:
-    		print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n"), exit()
+    		print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n"), exit()
       
 
     def endstmt(self):
@@ -1128,7 +1148,7 @@ class parser:
     	elif(data == ";"):
     		self.match(";")
     	else:
-    		print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n"), exit()
+    		print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n"), exit()
       
 
     def input_output(self):
@@ -1142,7 +1162,7 @@ class parser:
     		self.inputlist()
     		self.match(";")
     	else:
-    		print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n"), exit()
+    		print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n"), exit()
       
 
     def inputlist(self):
@@ -1151,7 +1171,7 @@ class parser:
     		self.singleinput()
     		self.inputlist_()
     	else:
-    		print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n"), exit()
+    		print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n"), exit()
        
 
     def inputlist_(self):
@@ -1162,7 +1182,7 @@ class parser:
     	elif(data == ";"):
     		return;
     	else:
-    		print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n"), exit()
+    		print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n"), exit()
 
     def singleinput(self):
     	data=self.lookahead.data["value"]
@@ -1170,7 +1190,7 @@ class parser:
     		self.match(">>")
     		self.matchID(self.lookahead.data["TYPE"])
     	else:
-    		print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n"), exit()
+    		print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n"), exit()
        
     def stmtlist_(self):
         data = self.lookahead.data['value'];
@@ -1181,7 +1201,7 @@ class parser:
         elif(data in ['}'] or data == "default"):
             return
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
 
     def returnstmt(self):
@@ -1193,7 +1213,7 @@ class parser:
         elif(data == '}'):
             return
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
     def data(self):
         value = self.lookahead.data['TYPE'];
@@ -1205,7 +1225,7 @@ class parser:
         elif (data == ';'):
             return
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
     def paramas(self):
         data = self.lookahead.data['value'];
@@ -1214,7 +1234,7 @@ class parser:
         elif (data == ')'):
             return
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
     def paralist(self):
         data = self.lookahead.data['value'];
@@ -1222,7 +1242,7 @@ class parser:
             self.parameter()
             self.paralist_()
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
     def paralist_(self):
         data = self.lookahead.data['value'];
@@ -1233,7 +1253,7 @@ class parser:
         elif(data == ')'):
             return
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
     def parameter(self):
         data = self.lookahead.data['value'];
@@ -1241,7 +1261,7 @@ class parser:
             self.vartypeid()
             self.paraid()
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
     def paraid(self):
         type = self.lookahead.data['TYPE'];
@@ -1249,7 +1269,7 @@ class parser:
             self.matchID(type)
             self.paraid_()
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
     def paraid_(self):
         data = self.lookahead.data['value'];
@@ -1259,7 +1279,7 @@ class parser:
         elif (data == ')' or data == ','):
             return
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
 
     def match(self,t):
@@ -1267,14 +1287,14 @@ class parser:
             self.lookahead= self.nextToken()
 
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
     def matchID(self,type):
 
         if(type=='IDENTIFIER'):
             self.lookahead = self.nextToken()
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
 
 #Checking the use of datatypes
@@ -1294,7 +1314,7 @@ class parser:
         elif (data == 'void'):
             self.match('void')
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
 
     def vartypeid(self):
@@ -1311,7 +1331,7 @@ class parser:
         elif (data == 'bool'):
             self.match('bool')
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nLine no.", self.lookahead.data['LINE_NUMBERS'], "\n")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n")
             exit()
 
 
@@ -1328,7 +1348,7 @@ def lexer():
 
 
     if check.lookahead.data['value']  == '$':
-        print(f"{bcolors.BOLD}{bcolors.OKBLUE}Syntactically Correct!\n")
+        print(f"{bcolors.BOLD}{bcolors.OKBLUE}No Syntax Error. \n")
 
 
 
