@@ -1,9 +1,9 @@
 #include <iostream>
 using namespace std;
-//mag lagay ako comment
-int main(){
+  int main(){
   int x = 10;
-  int y = 11; 
+  int i = 11; 
   sum = x + y;
   display << sum;
+  
   }

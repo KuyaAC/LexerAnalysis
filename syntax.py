@@ -90,6 +90,7 @@ TOKENS_DEF = {
     '<<': 'L_SHIFT',
     '>>': 'R_SHIFT',
     '==':'EQUALITY',
+    '!=': 'NE',
     ':':'COLON'
     
 }
@@ -1053,6 +1054,7 @@ class parser:
     	else:
     		print(f"{bcolors.BOLD}{bcolors.FAIL}Invalid Syntax" , "\nNear Line no.", self.lookahead.data['LINE_NUMBERS'], "\n"), exit()
         
+    
 
     def selection(self):
     	data =self.lookahead.data["value"]
@@ -1071,8 +1073,8 @@ class parser:
 
     def selection_(self):
     	data = self.lookahead.data["value"]
-    	if(data == ";"):
-    		self.match(";")
+    	if(data == "return"):
+            self.returnstmt()
     	elif(data =="else"):
     		self.match("else")
     		self.match("{")
