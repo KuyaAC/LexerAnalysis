@@ -1360,3 +1360,4 @@ if __name__ == '__main__':
 #This is a syntax analyzer made by Group 1
 #This program able to check the syntax of the code based from the ECPP Language
 #If you have a problem running this program you may contact :https://www.facebook.com/allencarl.delasalas/
+#ready for final checking

@@ -1,9 +1,16 @@
 #include <iostream>
 using namespace std;
-  int main(){
-  int x = 10;
-  int i = 11; 
-  sum = 2 + y;
-  display << sum;
+
+int main() {
+
+  int number;
+
+  display << "Enter an integer: ";
+  read >> number;
+
+  if (number != 0) {
+    display << "You entered a positive integer: " << number << endl;
   }
-  
+
+  return 0;
+}
