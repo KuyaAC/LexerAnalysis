@@ -3,7 +3,8 @@ using namespace std;
   int main(){
   int x = 10;
   int i = 11; 
-  sum = x + y;
+  sum = 2 + y;
   display << sum;
-  
   }
+  
+//may error walang bracket sa dulo

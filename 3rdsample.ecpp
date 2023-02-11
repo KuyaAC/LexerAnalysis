@@ -5,7 +5,7 @@ int main() {
 
   int number;
 
-  display << "Enter an integer: ";
+  display << "Enter an integer: "
   read >> number;
 
   if (number != 0) {

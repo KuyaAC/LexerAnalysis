@@ -12,7 +12,7 @@ TOKENS = [
     'KEY_WORD', 'IDENTIFIER', 'INTEGER_CONSTANT',
     'OPERATOR', 'SEPARATOR', 'STRING_CONSTANT', 'FLOAT_CONSTANTS', 'CHAR_CONSTANTS', 'DATATYPE' , 'BOOL_CONST']
 
-with open("sample.ecpp", "r") as input_file:
+with open("3rdsample.ecpp", "r") as input_file:
     contents = input_file.read()
 blank_var = contents
 print("INPUT FILE:\n",blank_var)
@@ -62,6 +62,7 @@ TOKENS_DEF = {
     '<<': 'L_SHIFT',
     '>>': 'R_SHIFT',
     '==':'EQUALITY',
+    '!=':'NE',
     ':':'COLON'
     
 }
@@ -1000,8 +1001,8 @@ class parser:
     		print("SYNTAX ERROR IN SELECTION: "+data)
     def selection_(self):
     	data = self.lookahead.data["value"]
-    	if(data == ";"):
-    		self.match(";")
+    	if(data == "return"):
+            self.returnstmt()
     	elif(data =="else"):
     		self.match("else")
     		self.match("{")
