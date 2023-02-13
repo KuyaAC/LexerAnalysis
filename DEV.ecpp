@@ -1,16 +1,19 @@
 #include <iostream>
+
 using namespace std;
 
 int main() {
 
-  int number;
+    int i;
 
-  display << "Enter an integer: ";
-  read >> number;
-
-  if (number != 0) {
-    display << "You entered a positive integer: " << number << endl;
-  }
-
-  return 0;
+    for (i = 1; i<=5; i++) 
+    {
+        display << i ;
+    }
+    while(i != 5) 
+    {
+        display << i ;
+        i++;
+    }
+    return 0;
 }

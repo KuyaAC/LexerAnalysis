@@ -7,4 +7,3 @@ using namespace std;
   display << sum;
   }
   
-//may error walang bracket sa dulo

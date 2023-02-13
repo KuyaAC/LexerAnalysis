@@ -46,7 +46,7 @@ file_name  = file_to_write
 with open(file_name, "r") as input_file:
     contents = input_file.read()
 blank_var = contents
-print("INPUT FILE:\n",blank_var)
+#print("INPUT FILE:\n",blank_var)
 
 #Color text Feature(pampaganda lang)
 class bcolors:
@@ -981,8 +981,7 @@ class parser:
         if(data == 'for'):
             self.match('for')
             self.match('(')
-            self.vardecinit()
-            self.match(';')
+            self.varriable()
             self.simpleExp()
             self.match(';')
             self.expression()
